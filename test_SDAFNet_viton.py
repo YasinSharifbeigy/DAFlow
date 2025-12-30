@@ -16,6 +16,7 @@ from torchvision import transforms, utils
 from torch.utils import data
 from torchvision.utils import save_image
 cudnn.benchmark = True
+import time
 
 
 
@@ -45,6 +46,7 @@ def test(opt, net):
     test_loader = data.DataLoader(test_dataset, batch_size=opt.batch_size, shuffle=opt.shuffle,num_workers=opt.workers)
     with torch.no_grad():
         for i, inputs in enumerate(tqdm.tqdm(test_loader)):
+            t = time.time()
             img_names = inputs['img_name']
             cloth_names = inputs['c_name']['paired']
             img = inputs['img'].cuda()
@@ -57,6 +59,7 @@ def test(opt, net):
             pose = F.interpolate(pose, size=(256, 192), mode='bilinear')
             ref_input = torch.cat((pose, img_agnostic), dim=1)
             tryon_result = net(ref_input, cloth_img, img_agnostic).detach()
+            print(time.time() - t)
             for j in range(tryon_result.shape[0]):
                 save_image(tryon_result[j:j+1], os.path.join(opt.save_dir, opt.name, "vis_viton_out", img_names[j]), nrow=1, normalize=True, range=(-1,1))
             if opt.add_compare:

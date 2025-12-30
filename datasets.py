@@ -55,6 +55,7 @@ class VITONDataset(data.Dataset):
             c[key] = self.transform(c[key])  
 
         pose_name = img_name.replace('.jpg', '_keypoints.jpg')
+        print("fgrfggggggggggggggggggg", pose_name)
         pose_rgb = Image.open(osp.join(self.data_path, 'vis_pose', pose_name))
         pose_rgb = transforms.Resize(self.load_width, interpolation=2)(pose_rgb)
         pose_rgb = self.transform(pose_rgb)  

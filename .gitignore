@@ -1,0 +1,4 @@
+checkpoints/ckpt_viton.pt
+data/VITON/VITON_test.tar
+data/VITON/VITON_test
+ckpt_viton.pt
